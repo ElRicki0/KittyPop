@@ -30,7 +30,6 @@ CREATE TABLE
         apellido_admin VARCHAR(50) NOT NULL,
         telefono_admin VARCHAR(50) NOT NULL,
         correo_admin VARCHAR(50) NOT NULL,
-        usuario_admin VARCHAR(20) NOT NULL,
         clave_admin VARCHAR(500) NOT NULL,
         fecha_clave DATE NOT NULL,
         codigo_clave VARCHAR(6) NOT NULL,
