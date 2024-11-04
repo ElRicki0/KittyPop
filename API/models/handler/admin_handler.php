@@ -4,7 +4,7 @@ require_once('../../helpers/database.php');
 /*
 *	Clase para manejar el comportamiento de los datos de la tabla CLIENTE.
 */
-class AdminClass
+class AdminHandler
 {
     // declaración de variables para manejo de datos
     protected $id = null;
@@ -17,6 +17,9 @@ class AdminClass
     protected $fechaClave = null;
     protected $codigo = null;
     protected $imagen = null;
+
+    // Constante para establecer la ruta de las imágenes.
+    const RUTA_IMAGEN = '../../images/admin/';
 
     public function __construct()
     {
@@ -107,5 +110,14 @@ class AdminClass
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
         $params = array($this->nombre, $this->apellido, $this->telefono, $this->correo, $this->clave, $this->fechaClave, $this->codigo, $this->imagen);
         return Database::executeRow($sql, $params);
+    }
+
+    public function readFilename()
+    {
+        $sql = 'SELECT imagen_admin
+                FROM tb_admins
+                WHERE id_admin = ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
     }
 }
