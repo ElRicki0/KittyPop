@@ -24,6 +24,15 @@ if (isset($_GET['action'])) {
                 //     $result['error'] = 'No hay coincidencias';
                 // }
                 // break;
+
+            case 'getUser':
+                if (isset($_SESSION['correoAdmin'])) {
+                    $result['status'] = 1;
+                    $result['username'] = $_SESSION['correoAdmin'];
+                } else {
+                    $result['error'] = 'Alias de administrador indefinido';
+                }
+                break;
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -46,6 +55,20 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al crear el administrador';
                 }
                 break;
+        }
+    } else {
+        // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
+        switch ($_GET['action']) {
+            case 'readUsers':
+                if ($administrador->readAll()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Debe autenticarse para ingresar';
+                } else {
+                    $result['error'] = 'Debe crear un administrador para comenzar';
+                }
+                break;
+
+            default:
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.

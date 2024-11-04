@@ -112,6 +112,11 @@ class AdminHandler
         return Database::executeRow($sql, $params);
     }
 
+    public function readAll() {
+        $sql = 'SELECT `nombre_admin`, `apellido_admin`, `telefono_admin`, `correo_admin`FROM `tb_admins`';
+        return Database::getRows($sql);
+    }
+
     public function readFilename()
     {
         $sql = 'SELECT imagen_admin
