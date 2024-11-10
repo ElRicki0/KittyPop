@@ -54,6 +54,17 @@ class AdminData extends AdminHandler
         }
     }
 
+    public function setTelefono($value)
+    {
+        if (Validator::validatePhone($value)) {
+            $this->telefono = $value;
+            return true;
+        } else {
+            $this->data_error = 'El teléfono debe tener el formato (2, 6, 7)###-####';
+            return false;
+        }
+    }
+
     public function setCorreo($value, $min = 8, $max = 100)
     {
         if (!Validator::validateEmail($value)) {
@@ -92,7 +103,7 @@ class AdminData extends AdminHandler
 
     public function setImagen($file, $filename = null)
     {
-        if (Validator::validateImageFile($file, 1000)) {
+        if (Validator::validateImageFile($file)) {
             $this->imagen = Validator::getFileName();
             return true;
         } elseif (Validator::getFileError()) {

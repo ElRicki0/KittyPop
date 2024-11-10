@@ -67,8 +67,31 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Debe crear un administrador para comenzar';
                 }
                 break;
+            case 'signUp':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$administrador->setNombre($_POST['nombreAdmin']) or
+                    !$administrador->setApellido($_POST['apellidoAdmin']) or
+                    !$administrador->setTelefono($_POST['telefonoAdmin']) or
+                    !$administrador->setCorreo($_POST['correoAdmin']) or
+                    !$administrador->setClave($_POST['claveAdmin']) or
+                    !$administrador->setImagen($_FILES['imagenAdmin'])
 
+                ) {
+                    $result['error'] = $administrador->getDataError();
+                } elseif ($_POST['claveAdmin'] != $_POST['claveAdmin2']) {
+                    $result['error'] = 'Contraseñas diferentes';
+                } elseif ($administrador->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Administrador registrado correctamente';
+                    // Se asigna el estado del archivo después de insertar.
+                    $result['fileStatus'] = Validator::saveFile($_FILES['imagenAdmin'], $administrador::RUTA_IMAGEN);
+                } else {
+                    $result['error'] =  'Ocurrió un problema al registrar el administrador';
+                }
+                break;
             default:
+                $result['error'] = 'Acción no disponible fuera de la sesión';
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.
