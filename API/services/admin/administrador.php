@@ -12,6 +12,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     if (isset($_SESSION['idAdmin'])) {
+        $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // case 'searchRows':
@@ -88,6 +89,15 @@ if (isset($_GET['action'])) {
                     $result['fileStatus'] = Validator::saveFile($_FILES['imagenAdmin'], $administrador::RUTA_IMAGEN);
                 } else {
                     $result['error'] =  'Ocurrió un problema al registrar el administrador';
+                }
+                break;
+            case 'logIn':
+                $_POST = Validator::validateForm($_POST);
+                if ($administrador->checkUser($_POST['correoAdmin'], $_POST['claveAdmin'])) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Autenticación correcta';
+                } else {
+                    $result['error'] = 'Credenciales incorrectas';
                 }
                 break;
             default:
